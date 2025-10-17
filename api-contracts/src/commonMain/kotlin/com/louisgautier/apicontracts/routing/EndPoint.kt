@@ -49,16 +49,21 @@ class EndPoint {
         val parent: EndPoint = EndPoint(),
     )
 
-    @Resource("notes")
-    class Notes(
+    @Resource("characters")
+    class Characters(
         val parent: EndPoint = EndPoint(),
         val page: Int? = null,
         val limit: Int? = null,
     ) {
-        @Resource("{id}")
-        class Id(
-            val parent: Notes = Notes(),
-            val id: Int,
-        )
+        @Resource("{character}")
+        class ByName(
+            val parent: Characters = Characters(),
+            val character: Char,
+        ) {
+            @Resource("svg")
+            class SVG(
+                val parent: ByName
+            )
+        }
     }
 }

@@ -1,10 +1,13 @@
 package com.louisgautier.sample.server
 
 import com.louisgautier.apicontracts.dto.AuthUserJson
+import com.louisgautier.apicontracts.dto.ResponseError
+import com.louisgautier.apicontracts.dto.ResponseList
 import com.louisgautier.apicontracts.dto.UserRefreshTokenJson
 import com.louisgautier.apicontracts.routing.EndPoint
 import com.louisgautier.sample.server.domain.AuthenticationRepository
-import com.louisgautier.sample.server.domain.NoteRepository
+import com.louisgautier.sample.server.domain.DictionaryRepository
+import com.louisgautier.sample.server.domain.GraphicRepository
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.Application
 import io.ktor.server.auth.authenticate
@@ -29,6 +32,7 @@ fun Application.configureRouting() {
         configureAdminRoutes()
         configureOpenRoutes()
         configureAuthedRoutes()
+        configureCharacterRoute()
 
         get("/") {
             call.respondText("Ktor")
@@ -38,7 +42,6 @@ fun Application.configureRouting() {
 
 private fun Routing.configureAuthedRoutes() {
     authenticate(Constants.JWT_NAME) {
-        val noteRepository: NoteRepository by inject()
         val authenticationRepository: AuthenticationRepository by inject()
 
         get<EndPoint.Me> {
@@ -56,20 +59,6 @@ private fun Routing.configureAuthedRoutes() {
                 it.onFailure {
                     call.respond(HttpStatusCode.InternalServerError)
                 }
-            }
-        }
-
-        get<EndPoint.Notes> {
-            val notes = noteRepository.getAllNotes(it.page ?: 0, it.limit ?: 100)
-            call.respond(HttpStatusCode.OK, notes)
-        }
-
-        get<EndPoint.Notes.Id> {
-            val note = noteRepository.getNoteById(it.id)
-            if (note == null) {
-                call.respond(HttpStatusCode.NotFound)
-            } else {
-                call.respond(HttpStatusCode.OK, note)
             }
         }
     }
@@ -123,5 +112,46 @@ private fun Routing.configureAdminRoutes() {
     openAPI(path = "admin/openapi")
     get<EndPoint.Admin.Metrics> {
         call.respond(appMicrometerRegistry.scrape())
+    }
+}
+
+private fun Routing.configureCharacterRoute() {
+    val dictionaryRepository: DictionaryRepository by inject()
+    val graphicRepository: GraphicRepository by inject()
+
+    get<EndPoint.Characters> {
+        val page = call.request.queryParameters["page"]?.toInt() ?: 0
+        val limit = call.request.queryParameters["limit"]?.toInt() ?: 100
+        dictionaryRepository.getAll(page, limit).let {
+            call.respond(HttpStatusCode.OK, ResponseList(page, limit, it))
+        }
+    }
+
+    get<EndPoint.Characters.ByName> { resource ->
+
+        val result = dictionaryRepository.get(resource.character)
+
+        if (result == null) {
+            call.respond(
+                HttpStatusCode.NotFound,
+                ResponseError("Glyph not found: ${resource.character}")
+            )
+        }
+
+        call.respond(HttpStatusCode.OK, result!!)
+    }
+
+    get<EndPoint.Characters.ByName.SVG> { resource ->
+
+        val result = graphicRepository.get(resource.parent.character)
+
+        if (result == null) {
+            call.respond(
+                HttpStatusCode.NotFound,
+                ResponseError("SVG not found: ${resource.parent.character}")
+            )
+        }
+
+        call.respond(HttpStatusCode.OK, result!!)
     }
 }

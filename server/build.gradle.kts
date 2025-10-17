@@ -61,9 +61,11 @@ dependencies {
     implementation(libs.koin.logger.slf4j)
     implementation(libs.exposed.core)
     implementation(libs.exposed.dao)
+    implementation(libs.exposed.json)
     implementation(libs.exposed.jdbc)
     implementation(libs.postgresql)
     implementation(libs.hikaricp)
+    implementation(libs.flyaway)
     implementation(libs.ehcache)
     implementation(libs.firebase.admin)
 

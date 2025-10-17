@@ -8,4 +8,5 @@ val defaultJson =
         isLenient = true
         ignoreUnknownKeys = true
         allowStructuredMapKeys = true
+        encodeDefaults = true
     }

@@ -2,7 +2,9 @@ package com.louisgautier.sample.server
 
 import com.louisgautier.sample.server.domain.AuthenticationRepository
 import com.louisgautier.sample.server.domain.AuthenticationRepositoryImpl
-import com.louisgautier.sample.server.domain.NoteRepository
+import com.louisgautier.sample.server.domain.DictionaryRepository
+import com.louisgautier.sample.server.domain.GraphicRepository
+import com.louisgautier.sample.server.parser.FileParser
 import io.github.jan.supabase.auth.Auth
 import io.github.jan.supabase.createSupabaseClient
 import io.ktor.server.application.Application
@@ -31,7 +33,9 @@ private val serverModule = module {
 
 private val domainModule = module {
     single { AuthenticationRepositoryImpl(get()) } bind AuthenticationRepository::class
-    single { NoteRepository() }
+    single { DictionaryRepository() }
+    single { GraphicRepository() }
+    single { FileParser(get(), get()) }
 }
 
 private val supabaseModule = module {

@@ -1,4 +1,4 @@
-rootProject.name = "Sample"
+ rootProject.name = "Learn-Chinese"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
