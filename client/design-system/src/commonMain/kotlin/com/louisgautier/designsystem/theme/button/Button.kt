@@ -17,11 +17,11 @@ import com.louisgautier.designsystem.AppTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun Button(
+fun ElegantButton(
     modifier: Modifier = Modifier,
     variant: ButtonVariant,
     type: ButtonType,
-    enabled: Boolean,
+    enabled: Boolean = true,
     onClick: () -> Unit,
     text: @Composable () -> Unit
 ) {
@@ -117,7 +117,7 @@ fun Test_PreviewButton(
     variant: ButtonVariant = ButtonVariant.SOLID,
     enabled: Boolean = true
 ) {
-    Button(
+    ElegantButton(
         variant = variant,
         type = type,
         enabled = enabled,

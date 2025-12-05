@@ -6,32 +6,32 @@ object AppLogger {
     fun w(
         message: String?,
         throwable: Throwable? = null,
-        tag: String = Logger.Companion.tag,
+        tag: String = Logger.tag,
     ) {
-        Logger.Companion.w(messageString = message.orEmpty(), throwable = throwable, tag = tag)
+        Logger.w(messageString = message.orEmpty(), throwable = throwable, tag = tag)
     }
 
     fun e(
         message: String?,
         throwable: Throwable? = null,
-        tag: String = Logger.Companion.tag,
+        tag: String = Logger.tag,
     ) {
-        Logger.Companion.e(messageString = message.orEmpty(), throwable = throwable, tag = tag)
+        Logger.e(messageString = message.orEmpty(), throwable = throwable, tag = tag)
     }
 
     fun i(
         message: String?,
         throwable: Throwable? = null,
-        tag: String = Logger.Companion.tag,
+        tag: String = Logger.tag,
     ) {
-        Logger.Companion.i(messageString = message.orEmpty(), throwable = throwable, tag = tag)
+        Logger.i(messageString = message.orEmpty(), throwable = throwable, tag = tag)
     }
 
     fun d(
         message: String?,
         throwable: Throwable? = null,
-        tag: String = Logger.Companion.tag,
+        tag: String = Logger.tag,
     ) {
-        Logger.Companion.d(messageString = message.orEmpty(), throwable = throwable, tag = tag)
+        Logger.d(messageString = message.orEmpty(), throwable = throwable, tag = tag)
     }
 }

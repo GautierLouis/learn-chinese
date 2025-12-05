@@ -4,7 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ResponseList<T>(
-    val page: Int,
-    val count: Int,
+    val hasNextPage: Boolean,
     val data: List<T>,
 )

@@ -1,5 +1,6 @@
 package com.louisgautier.apicontracts.routing
 
+import com.louisgautier.apicontracts.dto.CharacterFrequencyLevel
 import io.ktor.resources.Resource
 
 @Resource("/")
@@ -52,18 +53,36 @@ class EndPoint {
     @Resource("characters")
     class Characters(
         val parent: EndPoint = EndPoint(),
-        val page: Int? = null,
-        val limit: Int? = null,
     ) {
-        @Resource("{character}")
+        @Resource("{code}")
         class ByName(
             val parent: Characters = Characters(),
-            val character: Char,
+            val code: Int,
         ) {
             @Resource("svg")
             class SVG(
                 val parent: ByName
             )
         }
+
+        @Resource("by_level")
+        class ByLevel(
+            val parent: Characters = Characters(),
+            val level: CharacterFrequencyLevel,
+            val page: Int? = null,
+            val limit: Int? = null,
+        )
     }
+
+    @Resource("level")
+    class Level(
+        val parent: EndPoint = EndPoint(),
+    )
+
+    @Resource("generateQuiz")
+    class GenerateSession(
+        val parent: EndPoint = EndPoint(),
+        val level: List<CharacterFrequencyLevel> = CharacterFrequencyLevel.entries,
+        val limit: Int
+    )
 }

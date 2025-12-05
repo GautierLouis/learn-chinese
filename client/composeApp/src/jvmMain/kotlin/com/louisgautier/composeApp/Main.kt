@@ -11,7 +11,7 @@ fun main() =
         }
         Window(
             onCloseRequest = ::exitApplication,
-            title = "Sample",
+            title = "Learn Chinese",
         ) {
             App()
         }

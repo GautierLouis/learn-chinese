@@ -1,8 +1,10 @@
 package com.louisgautier.designsystem.theme.button
 
 import androidx.compose.runtime.Composable
+import com.louisgautier.utils.CoreKeepForR8
 import com.louisgautier.designsystem.AppTheme
 
+@CoreKeepForR8
 enum class ButtonType {
     PRIMARY,
     SECONDARY,

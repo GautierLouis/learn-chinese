@@ -1,0 +1,16 @@
+package com.louisgautier.firebase
+
+import com.louisgautier.firebase.event.TrackingEvent
+
+interface FirebaseManager {
+    fun initialize()
+    fun logEvent(event: TrackingEvent)
+    fun setUserId(userId: String)
+    fun setUserProperty(name: String, value: String)
+    fun fetchRemoteConfig()
+}
+
+const val DEFAULT_MIN_FETCH_INTERVAL: Long = 3600L // 1 hour default
+
+
+

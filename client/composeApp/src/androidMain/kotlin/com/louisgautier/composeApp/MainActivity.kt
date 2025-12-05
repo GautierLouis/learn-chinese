@@ -12,6 +12,7 @@ import com.louisgautier.utils.IntentActivityResultObserver
 import com.louisgautier.utils.PermissionActivityResultObserver
 import org.koin.android.ext.android.inject
 import org.koin.compose.KoinMultiplatformApplication
+import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.dsl.koinConfiguration
 
 class MainActivity : FragmentActivity() {
@@ -19,6 +20,7 @@ class MainActivity : FragmentActivity() {
     private val intentActivityResultObserver: IntentActivityResultObserver by inject()
     private val permissionActivityResultObserver: PermissionActivityResultObserver by inject()
 
+    @OptIn(KoinExperimentalAPI::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)

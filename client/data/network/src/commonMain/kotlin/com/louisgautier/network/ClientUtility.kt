@@ -2,8 +2,8 @@ package com.louisgautier.network
 
 import com.louisgautier.apicontracts.defaultJson
 import com.louisgautier.logger.AppLogger
+import com.louisgautier.utils.AppConfig
 import com.louisgautier.utils.AppErrorCode
-import com.louisgautier.utils.platform
 import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
 import io.ktor.client.call.body
@@ -28,6 +28,8 @@ import kotlinx.io.IOException
 import kotlin.coroutines.cancellation.CancellationException
 
 internal fun buildClient(
+    appConfig: AppConfig,
+    baseUrl: String,
     engine: HttpClientEngine,
     config: HttpClientConfig<*>.() -> Unit = { },
 ) = HttpClient(engine) {
@@ -42,10 +44,12 @@ internal fun buildClient(
     }
 
     defaultRequest {
-        url { protocol = URLProtocol.Companion.HTTP }
-        host = "10.0.2.2"
+        url { protocol = URLProtocol.HTTPS }
+        host = baseUrl
         port = 8080
-        header("X-Platform", platform())
+        header("X-Platform", appConfig.platform)
+        header("App-Version", appConfig.versionName)
+        header("App-Build", appConfig.versionCode)
         contentType(ContentType.Application.Json)
     }
 

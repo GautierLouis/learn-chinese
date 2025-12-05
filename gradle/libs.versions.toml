@@ -1,46 +1,50 @@
 [versions]
 app-version = "1.0.0"
 app-version-code = "1"
-agp = "8.13.0"
+agp = "8.13.1"
 android-tools = "31.12.2"
 android-compile-sdk = "36"
+android-target-sdk = "36"
 android-min-sdk = "24"
-android-targetsdk = "36"
-androidx-activity = "1.11.0"
+androidx-activity = "1.12.1"
 androidx-appcompat = "1.7.1"
-compose-lifecycle = "2.9.4"
-compose-navigation = "2.9.0"
+androidx-pagination = "3.3.6"
+androidx-pagination-compose = "3.4.0-alpha04"
+compose-lifecycle = "2.9.6"
+compose-navigation = "2.9.1"
 androidx-biometric = "1.1.0"
-androix-compose-m3 = "1.3.2"
-compose-hot-reload = "1.0.0-beta08"
-compose = "1.9.0"
+androix-compose-m3 = "1.4.0"
+compose-hot-reload = "1.0.0"
+compose = "1.9.3"
 junit = "4.13.2"
-kotlin = "2.2.20"
+kotlin = "2.2.21"
 kotlinx-coroutines = "1.10.2"
-ktor = "3.3.0"
-logback = "1.5.18"
-room = "2.8.0"
-sqlite = "2.6.0"
+ktor = "3.3.3"
+logback = "1.5.21"
+room = "2.8.4"
+sqlite = "2.6.2"
 ksp = "2.2.20-2.0.3"
 koin = "4.1.1"
 kotlinx-datetime = "0.7.1"
-datastore = "1.1.7"
+datastore = "1.2.0"
 kermit = "2.0.8"
-mokkery = "2.10.0"
+mokkery = "3.0.0"
 exposed = "0.61.0"
-postgresql = "42.7.7"
+postgresql = "42.7.8"
 hikaricp = "7.0.2"
-flyaway = "11.14.1"
+flyaway = "11.18.0"
 ehcache = "3.11.1"
-prometheus = "1.15.4"
-compose-m3-adaptive = "1.2.0-alpha06"
+prometheus = "1.16.0"
+compose-m3-adaptive = "1.2.0"
 firebase-admin = "9.1.1"
-supabase = "3.2.3"
-google-services = "4.4.3"
-firebase-bom = "34.3.0"
+supabase = "3.2.6"
+google-services = "4.4.4"
+firebase-bom = "34.6.0"
 runner = "1.7.0"
 core = "1.7.0"
 junit-version = "1.3.0"
+dataframe = "1.0.0-Beta4"
+serialization = "1.9.0"
 
 [libraries]
 #Junit
@@ -52,6 +56,8 @@ androidx-activity-compose = { module = "androidx.activity:activity-compose", ver
 androidx-biometeric = { module = "androidx.biometric:biometric", version.ref = "androidx-biometric" }
 androidx-compose-m3 = { module = "androidx.compose.material3:material3", version.ref = "androix-compose-m3" }
 androidx-compose-m3-window-size = { module = "androidx.compose.material3:material3-window-size-class", version.ref = "androix-compose-m3" }
+androidx-paging-common = { module = "androidx.paging:paging-common", version.ref = "androidx-pagination" }
+androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "androidx-pagination-compose" }
 
 #Mockkery
 mokkery-coroutine = { module = "dev.mokkery:mokkery-coroutines", version.ref = "mokkery" }
@@ -120,7 +126,7 @@ koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin" }
 
 #Kotlin
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
-kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlin" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
 kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-play-services = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "kotlinx-coroutines" }
@@ -139,6 +145,7 @@ compose-navigation-compose = { module = "org.jetbrains.androidx.navigation:navig
 compose-m3-adaptive = { module = "org.jetbrains.compose.material3.adaptive:adaptive", version.ref = "compose-m3-adaptive" }
 compose-lifecycle-viewmodel-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "compose-lifecycle" }
 compose-lifecycle-runtime-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "compose-lifecycle" }
+compose-backhandler = { module = "org.jetbrains.compose.ui:ui-backhandler", version.ref = "compose" }
 
 #Touchlab
 kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
@@ -154,6 +161,9 @@ firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
 supabase-bom = { module = "io.github.jan-tennert.supabase:bom", version.ref = "supabase" }
 supabase-auth = { module = "io.github.jan-tennert.supabase:auth-kt" }
 supabase-auth-ui = { module = "io.github.jan-tennert.supabase:compose-auth-ui" }
+
+#Dataframe
+dataframe = { module = "org.jetbrains.kotlinx:dataframe", version.ref = "dataframe" }
 
 #Convention Plugin
 android-gradle = { module = "com.android.tools.build:gradle", version.ref = "agp" }

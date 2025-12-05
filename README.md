@@ -1,4 +1,4 @@
-# Sample - Kotlin Multiplatform Project
+# Learn Chinese App - Kotlin Multiplatform Project
 
 [![CI Build Status](https://github.com/louisgautier/Sample-Compose-Multiplatform/actions/workflows/ci.yml/badge.svg)](https://github.com/louisgautier/Sample-Compose-Multiplatform/actions/workflows/ci.yml)
 [![Version](https://img.shields.io/github/v/release/louisgautier/Sample-Compose-Multiplatform.svg?label=Version&color=blue)](https://github.com/louisgautier/Sample-Compose-Multiplatform/releases/latest)

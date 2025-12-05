@@ -1,3 +1,10 @@
 package com.louisgautier.utils
 
-expect fun platform(): String
+
+class AppConfig(
+    val platform: String,
+    val flavor: String,
+    val isProduction: Boolean,
+    val versionName: String,
+    val versionCode: String,
+)

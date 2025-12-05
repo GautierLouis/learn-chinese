@@ -1,12 +1,12 @@
 package com.louisgautier.login
 
 import com.louisgautier.utils.AppErrorCode
+import learn_chinese.client.feature.login.generated.resources.Res
+import learn_chinese.client.feature.login.generated.resources.error_invalid_credentials
+import learn_chinese.client.feature.login.generated.resources.error_network
+import learn_chinese.client.feature.login.generated.resources.error_server
+import learn_chinese.client.feature.login.generated.resources.error_unknown
 import org.jetbrains.compose.resources.StringResource
-import sample.client.feature.login.generated.resources.Res
-import sample.client.feature.login.generated.resources.error_invalid_credentials
-import sample.client.feature.login.generated.resources.error_network
-import sample.client.feature.login.generated.resources.error_server
-import sample.client.feature.login.generated.resources.error_unknown
 
 
 fun AppErrorCode.toResourceString(): StringResource = when (this) {

@@ -9,6 +9,9 @@ kotlin {
             dependencies {
                 implementation(projects.client.domain.auth)
                 implementation(projects.client.data)
+
+                implementation(libs.androidx.paging.common)
+                implementation(libs.androidx.paging.compose)
             }
         }
     }

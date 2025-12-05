@@ -3,6 +3,7 @@ package com.louisgautier.network
 import com.louisgautier.apicontracts.dto.UserRefreshTokenJson
 import com.louisgautier.apicontracts.dto.UserTokenJson
 import com.louisgautier.network.interfaces.TokenAccessor
+import com.louisgautier.utils.AppConfig
 import dev.mokkery.MockMode
 import dev.mokkery.answering.returns
 import dev.mokkery.everySuspend
@@ -21,6 +22,8 @@ import kotlin.test.assertTrue
 
 class ApiClientTest {
     private val mockTokenAccessor = mock<TokenAccessor>(MockMode.autofill)
+    private val mockBaseUrl = ""
+    private val mockAppConfig = AppConfig("mock", "mock", true, "mock", "mock")
 
     @Test
     fun `assert that call function is catching malformed response properly`() {
@@ -32,7 +35,7 @@ class ApiClientTest {
                 )
             }
 
-        val client = DefaultService(mockEngine, mockTokenAccessor)
+        val client = DefaultService(mockEngine, mockTokenAccessor, mockBaseUrl, mockAppConfig)
         val service = DefaultAuthService(client.unauthedClient)
 
         runBlocking {
@@ -51,7 +54,7 @@ class ApiClientTest {
                 )
             }
 
-        val client = DefaultService(mockEngine, mockTokenAccessor)
+        val client = DefaultService(mockEngine, mockTokenAccessor, mockBaseUrl, mockAppConfig)
         val service = DefaultAuthService(client.unauthedClient)
 
         runBlocking {
@@ -71,7 +74,7 @@ class ApiClientTest {
                 )
             }
 
-        val client = DefaultService(mockEngine, mockTokenAccessor)
+        val client = DefaultService(mockEngine, mockTokenAccessor, mockBaseUrl, mockAppConfig)
         val service = DefaultAuthService(client.unauthedClient)
 
         runBlocking {
@@ -87,7 +90,7 @@ class ApiClientTest {
                 throw HttpRequestTimeoutException(request.url.toString(), 1000)
             }
 
-        val client = DefaultService(mockEngine, mockTokenAccessor)
+        val client = DefaultService(mockEngine, mockTokenAccessor, mockBaseUrl, mockAppConfig)
         val service = DefaultAuthService(client.unauthedClient)
 
         runBlocking {
@@ -109,7 +112,7 @@ class ApiClientTest {
         everySuspend { mockTokenAccessor.getUserToken() } returns "token"
         everySuspend { mockTokenAccessor.getUserRefreshToken() } returns "refresh_token"
 
-        val client = DefaultService(mockEngine, mockTokenAccessor)
+        val client = DefaultService(mockEngine, mockTokenAccessor,  mockBaseUrl, mockAppConfig)
         val authService = DefaultAuthService(client.unauthedClient)
         val unauthService = DefaultUserService(client.authedClient)
 

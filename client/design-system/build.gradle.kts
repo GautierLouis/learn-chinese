@@ -4,6 +4,14 @@ plugins {
     alias(libs.plugins.compose.convention)
 }
 
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation(projects.client.core.utils)
+        }
+    }
+}
+
 dependencies {
     debugImplementation(compose.uiTooling)
 }

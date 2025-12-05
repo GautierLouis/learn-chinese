@@ -1,83 +1,99 @@
 package com.louisgautier.composeApp
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.louisgautier.designsystem.theme.button.Button
-import com.louisgautier.designsystem.theme.button.ButtonType
-import com.louisgautier.designsystem.theme.button.ButtonVariant
-import com.louisgautier.firebase.notification.PushNotificationManager
-import com.louisgautier.firebase.remoteconfig.FeatureFlagsStore
-import com.louisgautier.gallery.LoadLocalPictures
-import com.louisgautier.login.LoginScreen
-import com.louisgautier.permission.PermissionHelper
-import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
-import org.koin.compose.koinInject
-import sample.client.composeapp.generated.resources.Res
-import sample.client.composeapp.generated.resources.greeting
+import com.louisgautier.composeApp.dictionary.DictionaryScreen
+import com.louisgautier.composeApp.home.HomeScreen
+import com.louisgautier.composeApp.session.SessionBuilderScreen
+import com.louisgautier.composeApp.session.SessionCongratulationScreen
+import com.louisgautier.composeApp.session.SessionScreen
+import com.louisgautier.firebase.FirebaseManager
+import com.louisgautier.firebase.RemoteConfigManager
+import com.louisgautier.firebase.event.Tracker
+import com.louisgautier.logger.AppLogger
+import com.louisgautier.utils.AppConfig
+import org.koin.mp.KoinPlatform
 
 @Composable
-fun App(
-    permissionManager: PermissionHelper = koinInject(),
-    loadLocalPictures: LoadLocalPictures = koinInject(),
-    flagStore: FeatureFlagsStore = koinInject(),
-    notificationManager: PushNotificationManager = koinInject()
-) {
-
-    LaunchedEffect(Unit) {
-
-    }
-
+fun App() {
 
     MaterialTheme {
         val navController = rememberNavController()
+        val firebaseManager = remember { KoinPlatform.getKoin().get<FirebaseManager>() }
+        val remoteConfigManager = remember { KoinPlatform.getKoin().get<RemoteConfigManager>() }
 
-        NavHost(
-            navController = navController,
-            startDestination = Navigation.Home,
-        ) {
-            composable<Navigation.Home> {
-                Home { navigation ->
-                    navController.navigate(navigation)
+        firebaseManager.initialize()
+
+        LaunchedEffect(Unit) {
+            remoteConfigManager.events.collect {
+
+            }
+        }
+
+        LaunchedEffect(Unit) {
+            Tracker.events.collect { event ->
+                AppLogger.d(tag = "Tracking event", message = event.toString())
+                firebaseManager.logEvent(event)
+            }
+        }
+
+        LaunchedEffect(navController) {
+            AppNavigation.navigationEvents.collect { event ->
+                AppLogger.d(tag = "Navigation event", message = event.toString())
+                when (event) {
+                    is NavigationCommand.Navigate -> navController.navigate(event.route) {
+                        if (event.clearBackStack) {
+                            popUpTo(Route.HomeRoute) { inclusive = false }
+                        }
+                    }
+
+                    is NavigationCommand.NavigateUp -> navController.navigateUp()
+                    is NavigationCommand.NavigateHome -> navController.navigate(Route.HomeRoute) {
+                        popUpTo(Route.HomeRoute) { inclusive = true }
+                    }
                 }
             }
+        }
 
-            composable<Navigation.Login> {
-                LoginScreen { }
+        Box {
+            NavHost(
+                navController = navController,
+                startDestination = Route.HomeRoute,
+            ) {
+                composable<Route.HomeRoute> { HomeScreen() }
+                composable<Route.SessionBuilderRoute> { SessionBuilderScreen() }
+                composable<Route.SessionRoute> { SessionScreen() }
+                composable<Route.DictionaryListRoute> { DictionaryScreen() }
+                composable<Route.SessionCongratulationScreenRoute> { SessionCongratulationScreen() }
             }
+            FlavorComponent()
         }
     }
 }
 
 @Composable
-@Preview
-fun Home(onNavigate: (Navigation) -> Unit = { }) {
-    Scaffold(
-        content = { paddingValues ->
-            Box(
-                modifier = Modifier.padding(paddingValues).fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Button(
-                    variant = ButtonVariant.GHOST,
-                    type = ButtonType.SECONDARY,
-                    enabled = true,
-                    onClick = { onNavigate(Navigation.Login) },
-                ) {
-                    Text(stringResource(Res.string.greeting))
-                }
-            }
-        }
-    )
+fun FlavorComponent() {
+    val appConfig = remember { KoinPlatform.getKoin().get<AppConfig>() }
+
+    if (!appConfig.isProduction) {
+        Text(
+            text = appConfig.flavor.uppercase(),
+            color = Color.White,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth()
+                .background(if (appConfig.flavor == "dev") Color.Red else Color.Blue)
+        )
+    }
 }

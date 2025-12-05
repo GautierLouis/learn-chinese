@@ -43,6 +43,7 @@ class ComposePlugin : Plugin<Project> {
                 implementation(libs.compose.lifecycle.viewmodel.compose)
                 implementation(libs.compose.lifecycle.runtime.compose)
                 implementation(libs.compose.navigation.compose)
+                implementation(libs.compose.backhandler)
 
                 implementation(libs.koin.compose)
                 implementation(libs.koin.compose.viewmodel)
@@ -64,6 +65,4 @@ class ComposePlugin : Plugin<Project> {
             }
         }
     }
-
-
 }

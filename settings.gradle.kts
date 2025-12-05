@@ -40,9 +40,7 @@ include(":api-contracts")
 //App
 include(":client:composeApp")
 //Feature
-include(":client:feature:biometric")
 include(":client:feature:login")
-include(":client:feature:gallery")
 //Domain
 include(":client:domain")
 include(":client:domain:auth")

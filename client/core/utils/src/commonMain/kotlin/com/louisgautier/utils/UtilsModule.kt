@@ -1,5 +1,10 @@
 package com.louisgautier.utils
 
 import org.koin.core.module.Module
+import org.koin.dsl.module
 
-expect val utilsModule: Module
+internal expect val utilsPlatformModule: Module
+
+val utilsModule: Module = module {
+    includes(utilsPlatformModule)
+}

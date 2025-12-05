@@ -32,7 +32,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.louisgautier.designsystem.AppTheme
-import com.louisgautier.designsystem.theme.button.Button
+import com.louisgautier.designsystem.theme.button.ElegantButton
 import com.louisgautier.designsystem.theme.button.ButtonType
 import com.louisgautier.designsystem.theme.button.ButtonVariant
 import org.jetbrains.compose.resources.getString
@@ -127,7 +127,7 @@ fun LoginScreen(
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Go),
                     )
 
-                    Button(
+                    ElegantButton(
                         modifier = Modifier.fillMaxWidth()
                             .fillMaxHeight()
                             .padding(top = 6.dp)

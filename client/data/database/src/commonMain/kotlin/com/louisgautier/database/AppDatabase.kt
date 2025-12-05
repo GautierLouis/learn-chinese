@@ -4,18 +4,20 @@ import androidx.room.ConstructedBy
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.RoomDatabaseConstructor
-import com.louisgautier.database.dao.DummyDao
-import com.louisgautier.database.entity.DummyEntity
+import androidx.room.TypeConverters
+import com.louisgautier.database.dao.SessionDao
+import com.louisgautier.database.entity.SessionEntity
 
 @Database(
     entities = [
-        DummyEntity::class,
+        SessionEntity::class
     ],
     version = 1,
 )
+@TypeConverters(RoomTypeConverters::class)
 @ConstructedBy(AppDatabaseConstructor::class)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun getDummyDao(): DummyDao
+    abstract fun getSessionDao(): SessionDao
 }
 
 // The Room compiler generates the `actual` implementations.
@@ -23,3 +25,4 @@ abstract class AppDatabase : RoomDatabase() {
 internal expect object AppDatabaseConstructor : RoomDatabaseConstructor<AppDatabase> {
     override fun initialize(): AppDatabase
 }
+

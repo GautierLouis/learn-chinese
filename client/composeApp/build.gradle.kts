@@ -1,4 +1,4 @@
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
@@ -17,8 +17,8 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
             isStatic = true
-            export(projects.client.core.firebase)
-            binaryOptions["bundleId"] = "com.louisgautier.composeApp"
+            //export(projects.client.core.firebase)
+            //binaryOptions["bundleId"] = "com.louisgautier.composeApp"
         }
     }
 
@@ -26,18 +26,21 @@ kotlin {
 
         commonMain.dependencies {
             implementation(projects.client.core)
-            implementation(projects.client.feature.biometric)
-            implementation(projects.client.feature.gallery)
             implementation(projects.client.feature.login)
             implementation(projects.client.designSystem)
             implementation(projects.client.domain) // needed for Koin
 
-            api(projects.client.core.firebase) // for cinterop
+            implementation(projects.apiContracts) // shortcut
+
+            //api(projects.client.core.firebase) // for cinterop
+
+            implementation(libs.androidx.paging.common)
+            implementation(libs.androidx.paging.compose)
         }
 
-        jvmMain.dependencies {
-            implementation(libs.kotlinx.coroutines.swing)
-        }
+//        jvmMain.dependencies {
+//            implementation(libs.kotlinx.coroutines.swing)
+//        }
 
         androidMain.dependencies {
             implementation(project.dependencies.platform(libs.firebase.bom))
@@ -49,11 +52,70 @@ kotlin {
         }
     }
 }
+
 android {
     defaultConfig {
         applicationId = "com.louisgautier.composeApp"
+        targetSdk = libs.versions.android.target.sdk.get().toInt()
         versionCode = libs.versions.app.version.code.get().toInt()
         versionName = libs.versions.app.version.asProvider().get()
+    }
+
+    flavorDimensions += "environment"
+    productFlavors {
+        create("dev") {
+            dimension = "environment"
+            applicationIdSuffix = ".dev"
+            versionNameSuffix = "-dev"
+            resValue("string", "app_name", "(Dev) Learn Chinese")
+        }
+
+        create("staging") {
+            dimension = "environment"
+
+            applicationIdSuffix = ".staging"
+            versionNameSuffix = "-staging"
+            resValue("string", "app_name", "(Staging) Learn Chinese")
+        }
+
+        create("prod") {
+            dimension = "environment"
+            resValue("string", "app_name", "Learn Chinese")
+        }
+    }
+
+    signingConfigs {
+        create("release") {
+            val props = Properties()
+            file("keystore.properties").inputStream().use { props.load(it) }
+
+            storeFile = file(props["keyStoreFile"] as String)
+            storePassword = props["keyStorePassword"] as String
+            keyAlias = props["keyAlias"] as String
+            keyPassword = props["keyPassword"] as String
+        }
+    }
+
+    buildTypes {
+        release {
+            isDebuggable = false
+            isMinifyEnabled = true
+            isShrinkResources = true
+            signingConfig = signingConfigs.getByName("release")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+
+        debug {
+            isMinifyEnabled = false
+            isDebuggable = true
+        }
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 }
 
@@ -61,14 +123,14 @@ dependencies {
     debugImplementation(compose.uiTooling)
 }
 
-compose.desktop {
-    application {
-        mainClass = "com.louisgautier.composeApp.MainKt"
-
-        nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "com.louisgautier.composeApp"
-            packageVersion = libs.versions.app.version.asProvider().get()
-        }
-    }
-}
+//compose.desktop {
+//    application {
+//        mainClass = "com.louisgautier.composeApp.MainKt"
+//
+//        nativeDistributions {
+//            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+//            packageName = "com.louisgautier.composeApp"
+//            packageVersion = libs.versions.app.version.asProvider().get()
+//        }
+//    }
+//}

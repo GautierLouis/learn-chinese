@@ -2,8 +2,11 @@ package com.louisgautier.designsystem.theme.button
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import com.louisgautier.utils.CoreKeepForR8
 import com.louisgautier.designsystem.theme.color.ColorFamily
 
+
+@CoreKeepForR8
 enum class ButtonVariant {
     SOLID,
     SUBTLE,

@@ -5,11 +5,11 @@ plugins {
     application
 }
 
-group = "com.louisgautier.sample.server"
+group = "com.louisgautier.server"
 version = "1.0.0"
 
 application {
-    mainClass.set("com.louisgautier.sample.server.ApplicationKt")
+    mainClass.set("com.louisgautier.server.ApplicationKt")
     
     val isDevelopment: Boolean = project.ext.has("development")
     applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")
@@ -28,6 +28,10 @@ tasks.withType<Copy> {
 tasks {
     // produce a fat jar without classifier so Docker picks it up easily
     named<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar>("shadowJar") {
+        isZip64 = true
+        exclude("META-INF/*.SF")
+        exclude("META-INF/*.DSA")
+        exclude("META-INF/*.RSA")
         archiveBaseName.set("app")
         archiveClassifier.set("")  // no "-all" suffix
         archiveVersion.set("")     // optional: remove version in name
@@ -71,6 +75,8 @@ dependencies {
 
     implementation(project.dependencies.platform(libs.supabase.bom))
     implementation(libs.supabase.auth)
+
+    implementation(libs.dataframe)
 
     implementation(libs.micrometer.registery.prometheus)
     testImplementation(libs.ktor.server.test.host)

@@ -38,7 +38,6 @@ class ConventionPlugin : Plugin<Project> {
 
         androidTarget()
 
-
         listOf(
             iosX64(),
             iosArm64(),
@@ -49,9 +48,8 @@ class ConventionPlugin : Plugin<Project> {
         }
 
         jvm()
-
-        macosX64()
-        macosArm64()
+        //macosX64()
+        //macosArm64()
 
         applyDefaultHierarchyTemplate()
     }
@@ -87,6 +85,11 @@ class ConventionPlugin : Plugin<Project> {
             minSdk = project.libs.versions.android.min.sdk.get().toInt()
             testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         }
+
+        buildFeatures {
+            buildConfig = true
+        }
+
         compileOptions {
             sourceCompatibility = JavaVersion.VERSION_17
             targetCompatibility = JavaVersion.VERSION_17
