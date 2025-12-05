@@ -1,18 +1,16 @@
 package com.louisgautier.firebase
 
+import com.louisgautier.firebase.event.TrackingEvent
 import com.louisgautier.logger.AppLogger
-import com.louisgautier.utils.context.ContextWrapper
 import firebase.FIRMessaging
 import firebase.FIRMessagingDelegateProtocol
 import firebase.FIRRemoteConfig
 import firebase.FIRRemoteConfigSettings
 import kotlinx.cinterop.ExperimentalForeignApi
-import kotlinx.coroutines.suspendCancellableCoroutine
 import platform.darwin.NSObject
-import kotlin.coroutines.resume
 
 @OptIn(ExperimentalForeignApi::class)
-actual class FirebaseController {
+class iOSFirebaseManager: FirebaseManager {
 
     private val rc: FIRRemoteConfig
         get() = FIRRemoteConfig.remoteConfig()
@@ -20,7 +18,8 @@ actual class FirebaseController {
     private val fm: FIRMessaging
         get() = FIRMessaging.messaging()
 
-    actual fun init(contextWrapper: ContextWrapper?) {
+    override fun initialize() {
+
         val settings = FIRRemoteConfigSettings().apply {
             minimumFetchInterval = DEFAULT_MIN_FETCH_INTERVAL.toDouble()
         }
@@ -33,32 +32,30 @@ actual class FirebaseController {
         }
     }
 
-    actual suspend fun fetchAndActivate(): Boolean = suspendCancellableCoroutine { cont ->
+    override fun logEvent(event: TrackingEvent) {
+    }
+
+    override fun setUserId(userId: String) {
+    }
+
+    override fun setUserProperty(name: String, value: String) {
+    }
+
+    override fun fetchRemoteConfig() {
         rc.fetchWithCompletionHandler { status, error ->
             if (error != null) {
-                cont.resume(false)
+                //cont.resume(false)
             } else {
                 // activate
                 rc.fetchAndActivateWithCompletionHandler { changed, actError ->
                     if (actError != null) {
-                        cont.resume(false)
+                        //cont.resume(false)
                     } else {
-                        cont.resume(true)
+                        //cont.resume(true)
                     }
                 }
             }
         }
     }
 
-    actual suspend fun getToken(): String {
-        return fm.FCMToken ?: ""
-    }
-
-    actual fun subscribeToTopic(topic: String) {
-        fm.subscribeToTopic(topic, completion = null)
-    }
-
-    actual fun unsubscribeFromTopic(topic: String) {
-        fm.unsubscribeFromTopic(topic, completion = null)
-    }
 }
