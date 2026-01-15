@@ -1,33 +1,6 @@
 import UIKit
 import SwiftUI
 import ComposeApp
-import Firebase
-
-class AppDelegate: UIResponder, UIApplicationDelegate {
-    let pushManager = PushNotificationManager()
-
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-        UNUserNotificationCenter.current().requestAuthorization(
-            options: authOptions,
-            completionHandler: { _, _ in }
-        )
-
-        application.registerForRemoteNotifications()
-
-        return true
-    }
-
-    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
-        let dict = userInfo as NSDictionary
-        let title = dict["title"] as? String
-        let body = dict["body"] as? String
-        let map = dict["data"] as? [String: String] ?? [:]
-        let pushNotification = PushNotificationData(title: title, body: body, data: map)
-        pushManager.sendNotification(data: pushNotification)
-    }
-}
-
 
 struct ComposeView: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> UIViewController {
@@ -38,14 +11,16 @@ struct ComposeView: UIViewControllerRepresentable {
 }
 
 struct ContentView: View {
-    init() {
-        FirebaseApp.configure()
-    }
     var body: some View {
         ComposeView()
             .ignoresSafeArea()
     }
 }
 
-
+// MARK: - Preview
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
+}
 

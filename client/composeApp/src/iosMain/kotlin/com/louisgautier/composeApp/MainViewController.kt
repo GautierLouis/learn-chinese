@@ -2,8 +2,10 @@ package com.louisgautier.composeApp
 
 import androidx.compose.ui.window.ComposeUIViewController
 import org.koin.compose.KoinApplication
+import platform.UIKit.UIViewController
 
-fun MainViewController() =
+@Suppress("unused")
+fun MainViewController(): UIViewController =
     ComposeUIViewController {
         KoinApplication(application = {
             modules(getAllModules())

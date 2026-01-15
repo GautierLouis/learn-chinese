@@ -18,7 +18,6 @@ kotlin {
             baseName = "ComposeApp"
             isStatic = true
             //export(projects.client.core.firebase)
-            //binaryOptions["bundleId"] = "com.louisgautier.composeApp"
         }
     }
 
@@ -32,10 +31,10 @@ kotlin {
 
             implementation(projects.apiContracts) // shortcut
 
-            //api(projects.client.core.firebase) // for cinterop
-
             implementation(libs.androidx.paging.common)
             implementation(libs.androidx.paging.compose)
+
+           //api(projects.client.core.firebase)
         }
 
 //        jvmMain.dependencies {

@@ -15,16 +15,16 @@ import com.louisgautier.firebase.event.TrackingEvent
 import com.louisgautier.firebase.remoteconfig.FeatureFlagKey
 import com.louisgautier.logger.AppLogger
 
-class AndroidFirebaseManager(
+actual class FirebaseManager(
     private val context: Context,
     private val remoteConfigManager: RemoteConfigManager
-) : FirebaseManager {
+) {
 
     private lateinit var analytics: FirebaseAnalytics
     private lateinit var remoteConfig: FirebaseRemoteConfig
     private lateinit var messaging: FirebaseMessaging
 
-    override fun initialize() {
+    actual fun initialize() {
         FirebaseApp.initializeApp(context)
 
         analytics = Firebase.analytics
@@ -53,7 +53,7 @@ class AndroidFirebaseManager(
         }
     }
 
-    override fun logEvent(
+    actual fun logEvent(
         event: TrackingEvent
     ) {
         val bundle = Bundle().apply {
@@ -71,15 +71,15 @@ class AndroidFirebaseManager(
         analytics.logEvent(event.key, bundle)
     }
 
-    override fun setUserId(userId: String) {
+    actual fun setUserId(userId: String) {
         analytics.setUserId(userId)
     }
 
-    override fun setUserProperty(name: String, value: String) {
+    actual fun setUserProperty(name: String, value: String) {
         analytics.setUserProperty(name, value)
     }
 
-    override fun fetchRemoteConfig() {
+    actual fun fetchRemoteConfig() {
         remoteConfig.fetchAndActivate().addOnSuccessListener { success ->
             AppLogger.d(tag = "FirebaseManager", message = "Remote config fetched and activated with success: $success")
 

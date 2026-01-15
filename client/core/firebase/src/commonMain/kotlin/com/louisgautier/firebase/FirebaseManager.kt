@@ -2,7 +2,7 @@ package com.louisgautier.firebase
 
 import com.louisgautier.firebase.event.TrackingEvent
 
-interface FirebaseManager {
+expect class FirebaseManager {
     fun initialize()
     fun logEvent(event: TrackingEvent)
     fun setUserId(userId: String)

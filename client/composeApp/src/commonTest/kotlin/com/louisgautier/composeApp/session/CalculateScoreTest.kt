@@ -20,7 +20,7 @@ class CalculateScoreTest {
     ): List<Dictionary> {
         return List(count.value) {
             Dictionary(
-                character = 'a',
+                code = 'a'.code,
                 level = level
             )
         }

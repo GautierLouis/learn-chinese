@@ -5,15 +5,14 @@ package com.louisgautier.apicontracts
  * Need to avoid android dependencies to :server module
  * @see :client:composeApp:proguard-rules.pro for implementation of this annotation
  */
-@OptIn(ExperimentalMultiplatform::class)
-@Target(
-    AnnotationTarget.CLASS,
-    AnnotationTarget.FUNCTION,
-    AnnotationTarget.PROPERTY,
-    AnnotationTarget.FIELD,
-    AnnotationTarget.CONSTRUCTOR
-)
-@Retention(AnnotationRetention.BINARY)
-@OptionalExpectation
-expect annotation class KeepForR8()
-
+//@OptIn(ExperimentalMultiplatform::class)
+//@Target(
+//    AnnotationTarget.CLASS,
+//    AnnotationTarget.FUNCTION,
+//    AnnotationTarget.PROPERTY,
+//    AnnotationTarget.FIELD,
+//    AnnotationTarget.CONSTRUCTOR
+//)
+//@Retention(AnnotationRetention.BINARY)
+//@OptionalExpectation
+annotation class KeepForR8()

@@ -9,9 +9,9 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.louisgautier.utils.context.ContextWrapper
 
-actual class PushNotificationManager(
+class AndroidPushNotificationManager(
     private val contextWrapper: ContextWrapper,
-) {
+): PushNotificationManager {
 
     init {
         //Create Channel if needed
@@ -19,7 +19,7 @@ actual class PushNotificationManager(
     }
 
     @SuppressLint("MissingPermission")
-    actual fun sendNotification(data: PushNotificationData) {
+    override fun sendNotification(data: PushNotificationData) {
         val builder = NotificationCompat.Builder(contextWrapper.context, "CHANNEL_ID")
 //            .setSmallIcon() TODO(Fix): Crash if no icon
             .setContentTitle(data.title)

@@ -36,7 +36,7 @@ import com.louisgautier.composeApp.session.QuestionCount.TWENTY
 import com.louisgautier.utils.CoreKeepForR8
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-@CoreKeepForR8
+//@CoreKeepForR8
 enum class QuestionCount(val value: Int) {
     FIVE(5),
     TEN(10),

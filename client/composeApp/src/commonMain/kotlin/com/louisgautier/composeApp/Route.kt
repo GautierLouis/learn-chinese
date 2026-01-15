@@ -3,7 +3,13 @@ package com.louisgautier.composeApp
 import com.louisgautier.apicontracts.dto.CharacterFrequencyLevel
 import com.louisgautier.composeApp.session.QuestionCount
 import com.louisgautier.domain.model.Difficulty
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.descriptors.PrimitiveKind
+import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
 @Serializable
 sealed class Route {
@@ -26,14 +32,14 @@ sealed class Route {
 
     @Serializable
     data class SessionRoute(
-        val level: List<CharacterFrequencyLevel>,
-        val difficulty: Difficulty,
-        val limit: QuestionCount,
+        val levels: String,
+        val difficulty: String,
+        val limit: String,
     ) : Route() {
         companion object {
             fun default() = SessionRoute(
-                listOf(CharacterFrequencyLevel.COMMON),
-                Difficulty.EASY, QuestionCount.FIVE
+                listOf(CharacterFrequencyLevel.COMMON).joinToString(),
+                Difficulty.EASY.toString(), QuestionCount.FIVE.toString()
             )
         }
     }

@@ -1,34 +1,18 @@
-import java.io.FileInputStream
-import java.util.Properties
-
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.convention.plugin)
 }
 
 kotlin {
-    val localProperties = Properties().apply {
-        load(FileInputStream(File(rootProject.rootDir, "firebase.properties")))
-    }
-    val firebaseSdkPath: String = localProperties.getProperty("FIREBASE_SDK").toString()
 
     listOf(
         iosX64(),
         iosArm64(),
         iosSimulatorArm64()
-    ).forEach {
-
-        it.compilations["main"].cinterops.create("firebase") {
-            definitionFile = file("src/nativeInterop/cinterop/firebase.def")
-            //TODO(Fix) : firebaseSdkPath point to a DerivedData on my computer : Move the SPM into this repo
-            compilerOpts(
-                "-I${firebaseSdkPath}/FirebaseRemoteConfig/Sources/Public",
-                "-I${firebaseSdkPath}/FirebaseRemoteConfig/Sources/Public/FirebaseRemoteConfig",
-                "-I${firebaseSdkPath}/FirebaseCore/Sources/Public",
-                "-I${firebaseSdkPath}/FirebaseCore/Sources/Public/FirebaseCore",
-                "-I${firebaseSdkPath}/FirebaseMessaging/Sources/Public",
-                "-I${firebaseSdkPath}/FirebaseMessaging/Sources/Public/FirebaseMessaging"
-            )
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+            baseName = "FirebaseModule"
+            isStatic = true
         }
     }
 

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,6 +27,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.louisgautier.composeApp.AppNavigation
 import com.louisgautier.composeApp.design.atom.AppButton
+import com.louisgautier.composeApp.design.previewDictionaryWithGraphic
 import com.louisgautier.domain.model.Response
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -84,53 +86,50 @@ fun SessionScreenContent(
             )
         },
         content = { paddingValues ->
-            HorizontalPager(
-                modifier = Modifier
-                    .padding(paddingValues)
-                    .fillMaxWidth(),
-                state = state.pagerState
+            Column(
+                modifier = Modifier.fillMaxSize().padding(paddingValues),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceBetween
             ) {
-                Column(
-                    modifier = Modifier.fillMaxSize().padding(top = 16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.SpaceBetween
+                Spacer(Modifier.weight(1f))
+                HorizontalPager(
+                    userScrollEnabled = false,
+                    modifier = Modifier.fillMaxWidth(),
+                    state = state.pagerState
                 ) {
-                    Spacer(Modifier.weight(1f))
-
                     GraphicPager(
                         difficulty = state.difficulty,
-                        graphic = state.questions[it].graphics,
+                        graphic = state.questions[0].graphics,
                         modifier = Modifier.fillMaxWidth()
                     ) { response -> onComplete(response) }
+                }
 
-                    Spacer(Modifier.weight(3f))
+                Spacer(Modifier.weight(3f))
 
-                    Column(
-                        modifier = Modifier.padding(16.dp)
-
+                Column(
+                    modifier = Modifier.padding(16.dp)
+                ) {
+                    AppButton(
+                        onClick = {
+                            if (state.isLastQuestion) onNext() else onFinish()
+                        },
+                        enabled = state.isAnswered,
                     ) {
-                        AppButton(
-                            onClick = {
-                                if (state.isLastQuestion) onNext() else onFinish()
-                            },
-                            enabled = state.isAnswered,
-                        ) {
-                            Text(
-                                text = if (state.isLastQuestion) "Complete" else "Finish",
-                                fontSize = 16.sp,
-                            )
-                        }
-                        AppButton(
-                            onClick = { showDialog = true },
-                            containerColor = Color.Transparent,
-                            contentColor = Color.Red,
-                            modifier = Modifier.wrapContentSize()
-                        ) {
-                            Text(
-                                text = "Quit",
-                                fontSize = 16.sp,
-                            )
-                        }
+                        Text(
+                            text = if (state.isLastQuestion) "Complete" else "Finish",
+                            fontSize = 16.sp,
+                        )
+                    }
+                    AppButton(
+                        onClick = { showDialog = true },
+                        containerColor = Color.Transparent,
+                        contentColor = Color.Red,
+                        modifier = Modifier.wrapContentSize()
+                    ) {
+                        Text(
+                            text = "Quit",
+                            fontSize = 16.sp,
+                        )
                     }
                 }
             }
@@ -142,7 +141,12 @@ fun SessionScreenContent(
 @Composable
 fun SessionScreenContentPreview() {
     SessionScreenContent(
-        state = SessionViewModel.UIState(),
+        state = SessionViewModel.UIState(
+            questions = listOf(
+                previewDictionaryWithGraphic,
+            ),
+            pagerState = PagerState { 1 }
+        ),
         onComplete = { },
         onFinish = {}
     )

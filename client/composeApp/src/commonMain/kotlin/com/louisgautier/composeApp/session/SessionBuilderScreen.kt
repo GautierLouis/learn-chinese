@@ -46,9 +46,9 @@ fun SessionBuilderScreen() {
         } else {
             AppNavigation.navigate(
                 Route.SessionRoute(
-                    level = selectedLevels.toList(),
-                    difficulty = selectedDifficulty,
-                    limit = questionCount
+                    levels = selectedLevels.joinToString(),
+                    difficulty = selectedDifficulty.toString(),
+                    limit = questionCount.toString()
                 ),
                 true
             )

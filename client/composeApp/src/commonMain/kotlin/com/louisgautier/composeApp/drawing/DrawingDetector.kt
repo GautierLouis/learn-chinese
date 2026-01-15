@@ -1,10 +1,21 @@
 package com.louisgautier.composeApp.drawing
 
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.gestures.drag
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.input.pointer.PointerInputScope
+import androidx.compose.ui.input.pointer.changedToUp
+import androidx.compose.ui.input.pointer.isOutOfBounds
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.toSize
 
 fun Modifier.drawingDetector(
     points: SnapshotStateList<Offset>,
@@ -29,5 +40,5 @@ fun Modifier.drawingDetector(
                 points.clear()
             }
         )
-    }
+    }.clipToBounds()
 }

@@ -42,11 +42,15 @@ class SessionViewModel(
             get() = pagerState.canScrollForward
     }
 
-    private val level: List<CharacterFrequencyLevel> = savedStateHandle["level"]
+    private val level: List<CharacterFrequencyLevel> = (savedStateHandle["levels"] as? String)
+        ?.split(",")
+        ?.map { CharacterFrequencyLevel.valueOf(it) }
         ?: CharacterFrequencyLevel.entries
-    private val difficulty: Difficulty = savedStateHandle["difficulty"]
+    private val difficulty: Difficulty = (savedStateHandle["difficulty"] as? String)
+        ?.let { Difficulty.valueOf(it) }
         ?: Difficulty.EASY
-    private val limit: QuestionCount = savedStateHandle["limit"]
+    private val limit: QuestionCount = (savedStateHandle["limit"] as? String)
+        ?.let { QuestionCount.valueOf(it) }
         ?: QuestionCount.FIVE
 
     private var _state = MutableStateFlow<UIState>(UIState())
