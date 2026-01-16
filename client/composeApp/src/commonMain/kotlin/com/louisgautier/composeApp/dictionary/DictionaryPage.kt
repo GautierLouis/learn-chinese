@@ -10,10 +10,8 @@ import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.louisgautier.apicontracts.dto.SimpleDictionary
-import com.louisgautier.composeApp.design.page.ErrorFullPage
+import com.louisgautier.composeApp.design.page.ErrorPageContent
 import com.louisgautier.composeApp.design.previewSimpleDataList
-import com.louisgautier.composeApp.design.previewSimpleDictionary
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
@@ -28,7 +26,7 @@ fun DictionaryPage(
     Box(modifier = modifier.clipToBounds()) {
         when {
             items.loadState.refresh is LoadState.Error && items.itemCount == 0 -> {
-                ErrorFullPage(action = { items.retry() })
+                ErrorPageContent(action = { items.retry() })
             }
             // Initial loading
             items.loadState.refresh is LoadState.Loading && items.itemCount == 0 -> {

@@ -27,7 +27,7 @@ class SessionViewModel(
 
     data class UIState(
         val isLoading: Boolean = false,
-        val error: String? = null,
+        val isError: Boolean = false,
         val difficulty: Difficulty = Difficulty.EASY,
 
         val questions: List<DictionaryWithGraphic> = emptyList(),
@@ -44,7 +44,7 @@ class SessionViewModel(
 
     private val level: List<CharacterFrequencyLevel> = (savedStateHandle["levels"] as? String)
         ?.split(",")
-        ?.map { CharacterFrequencyLevel.valueOf(it) }
+        ?.map { CharacterFrequencyLevel.valueOf(it.trim()) }
         ?: CharacterFrequencyLevel.entries
     private val difficulty: Difficulty = (savedStateHandle["difficulty"] as? String)
         ?.let { Difficulty.valueOf(it) }
@@ -64,7 +64,7 @@ class SessionViewModel(
         loadQuestions()
     }
 
-    private fun loadQuestions() {
+    fun loadQuestions() {
         viewModelScope.launch {
             _state.update { it.copy(isLoading = true) }
             repository.generateSession(level, limit.value)
@@ -72,12 +72,13 @@ class SessionViewModel(
                     _state.update {
                         it.copy(
                             isLoading = false,
+                            isError = false,
                             questions = data,
                             pagerState = PagerState { data.size },
                         )
                     }
                 }.onFailure {
-                    _state.update { it.copy(isLoading = false, error = it.error) }
+                    _state.update { it.copy(isLoading = false, isError = true) }
                 }
         }
     }
