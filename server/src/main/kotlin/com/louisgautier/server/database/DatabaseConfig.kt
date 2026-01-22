@@ -25,13 +25,13 @@ fun Application.configureDatabase() {
         maximumPoolSize = 3
         isAutoCommit = false
         transactionIsolation = "TRANSACTION_REPEATABLE_READ"
-        //addDataSourceProperty("ssl", "true")
-        //addDataSourceProperty("sslmode", "require")
+        addDataSourceProperty("ssl", "true")
+        addDataSourceProperty("sslmode", "require")
         addDataSourceProperty("reWriteBatchedInserts", "true")
         validate()
     }
 
-    Database.connect(HikariDataSource(config))
+    Database.connect(config)
 
     transaction {
         addLogger(StdOutSqlLogger)
