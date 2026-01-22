@@ -3,11 +3,11 @@ package com.louisgautier.server
 import io.ktor.server.application.ApplicationEnvironment
 
 data class BuildEnvironment(
-    val type: BuildEnvironmentType,
+    //val type: BuildEnvironmentType,
     val port: Int,
     val databaseUrl: String,
-    val databaseUser: String,
-    val databasePassword: String,
+    //val databaseUser: String,
+    //val databasePassword: String,
     val supabaseUrl: String,
     val supabasePublicKey: String,
     val supabasePrivateKey: String,
@@ -24,11 +24,11 @@ data class BuildEnvironment(
     companion object {
         fun build(environment: ApplicationEnvironment) = with(environment.config) {
             BuildEnvironment(
-                type = BuildEnvironmentType.valueOf(property("app.env").getString()),
+                //type = BuildEnvironmentType.valueOf(property("app.env").getString()),
                 port = property("ktor.deployment.port").getString().toInt(),
                 databaseUrl = property("database.url").getString(),
-                databaseUser = property("database.user").getString(),
-                databasePassword = property("database.password").getString(),
+                //databaseUser = property("database.user").getString(),
+                //databasePassword = property("database.password").getString(),
                 supabaseUrl = property("supabase.url").getString(),
                 supabasePublicKey = property("supabase.publicKey").getString(),
                 supabasePrivateKey = property("supabase.privateKey").getString(),
