@@ -5,6 +5,7 @@ import com.louisgautier.apicontracts.dto.Decomposition
 import com.louisgautier.apicontracts.dto.Dictionary
 import com.louisgautier.apicontracts.dto.Etymology
 import com.louisgautier.apicontracts.dto.Graphic
+import com.louisgautier.apicontracts.dto.Point
 import com.louisgautier.apicontracts.dto.Stroke
 import com.louisgautier.server.database.entity.DictionaryDao
 import com.louisgautier.server.database.entity.GraphicDao
@@ -53,7 +54,13 @@ class FileParser(
                 dictionaryRepository.batchCreate(dict)
             }
             if (graphicCount == EMPTY_COUNT) {
-                val graph = parseGraphic().map { g -> Graphic(g.character.code, g.strokes, g.medians) }
+                val graph = parseGraphic().map { g ->
+                    Graphic(
+                        g.character.code,
+                        g.strokes,
+                        g.medians.map { m -> Stroke(points = m.map { p -> Point(p[0], p[1]) }) }
+                    )
+                }
                 graphicRepository.batchCreate(graph)
             }
         } catch (e: Exception) {
@@ -143,7 +150,9 @@ class FileParser(
     private fun serializeOriginal(node: IdeographicNode): String {
         return when (node) {
             is IdeographicNode.Glyph -> node.code.toString()
-            is IdeographicNode.Operator -> node.op.symbol.toString() + node.children.joinToString(separator = "") {
+            is IdeographicNode.Operator -> node.op.symbol.toString() + node.children.joinToString(
+                separator = ""
+            ) {
                 serializeOriginal(it)
             }
         }
@@ -208,5 +217,5 @@ data class DictionaryParsed(
 data class GraphicParser(
     val character: Char,
     val strokes: List<String>,
-    val medians: List<Stroke>
+    val medians: List<List<List<Float>>>
 )
