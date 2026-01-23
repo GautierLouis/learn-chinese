@@ -8,6 +8,7 @@ plugins {
 group = "com.louisgautier.server"
 version = "1.0.0"
 
+
 application {
     mainClass.set("com.louisgautier.server.ApplicationKt")
     
