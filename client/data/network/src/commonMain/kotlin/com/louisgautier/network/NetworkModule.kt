@@ -20,18 +20,17 @@ private object NamedNetworkModule {
 sealed class NetworkEnvironment(
     val scheme: URLProtocol,
     val host: String,
-    val port: Int
 ) {
-    object Dev : NetworkEnvironment(URLProtocol.HTTP, "10.0.2.2", 8080)
-    object Preprod : NetworkEnvironment(URLProtocol.HTTPS, "preprod.api.example.com", 8443)
-    object Prod : NetworkEnvironment(URLProtocol.HTTPS, "api.example.com", 443)
+    object Dev : NetworkEnvironment(URLProtocol.HTTP, "10.0.2.2")
+    object Preprod : NetworkEnvironment(URLProtocol.HTTPS, "learn-chinese-staging.up.railway.app")
+    object Prod : NetworkEnvironment(URLProtocol.HTTPS, "learn-chinese-production.up.railway.app")
 }
 
 val networkModule: Module = module {
     single {
         when (get<AppConfig>().flavor) {
             "dev" -> NetworkEnvironment.Dev
-            "preprod" -> NetworkEnvironment.Preprod
+            "staging" -> NetworkEnvironment.Preprod
             else -> NetworkEnvironment.Prod
         }
     }
