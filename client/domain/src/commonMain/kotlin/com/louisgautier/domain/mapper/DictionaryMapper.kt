@@ -4,6 +4,8 @@ import com.louisgautier.apicontracts.dto.CharacterFrequencyLevelDto
 import com.louisgautier.apicontracts.dto.DecompositionDto
 import com.louisgautier.apicontracts.dto.DictionaryDto
 import com.louisgautier.apicontracts.dto.DictionaryWithGraphicDto
+import com.louisgautier.apicontracts.dto.EtymologyDto
+import com.louisgautier.apicontracts.dto.EtymologyTypeDto
 import com.louisgautier.apicontracts.dto.GraphicDto
 import com.louisgautier.apicontracts.dto.LevelCountDto
 import com.louisgautier.apicontracts.dto.ResponseListDto
@@ -12,6 +14,8 @@ import com.louisgautier.domain.model.CharacterFrequencyLevel
 import com.louisgautier.domain.model.Decomposition
 import com.louisgautier.domain.model.Dictionary
 import com.louisgautier.domain.model.DictionaryWithGraphic
+import com.louisgautier.domain.model.Etymology
+import com.louisgautier.domain.model.EtymologyType
 import com.louisgautier.domain.model.Graphic
 import com.louisgautier.domain.model.Point
 import com.louisgautier.domain.model.ResponseList
@@ -52,6 +56,17 @@ fun <T, U> ResponseListDto<T>.toDomain(converter : (T) -> U) =
 fun DecompositionDto.toDomain() =
     Decomposition(symbolCode, glyphsCode)
 
+fun EtymologyDto.toDomain() =
+    Etymology(
+        type = type?.toDomain(),
+        phonetic = phonetic,
+        semantic = semantic,
+        hint = hint
+    )
+
+fun EtymologyTypeDto.toDomain() =
+    EtymologyType.valueOf(this.name)
+
 fun DictionaryDto.toDomain() =
     Dictionary(
         code = code,
@@ -60,7 +75,7 @@ fun DictionaryDto.toDomain() =
         decomposition = decomposition,
         decompositionList = decompositionList.map { it.toDomain() },
         level = level.toDomain(),
-        etymology = etymology,
+        etymology = etymology?.toDomain(),
         radical = radical,
         matches = matches
     )

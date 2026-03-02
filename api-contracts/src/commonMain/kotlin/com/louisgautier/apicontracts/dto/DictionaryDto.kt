@@ -10,7 +10,7 @@ data class DictionaryDto(
     val decomposition: String = "",
     val decompositionList: List<DecompositionDto> = emptyList(),
     val level: CharacterFrequencyLevelDto = CharacterFrequencyLevelDto.UNKNOWN,
-    val etymology: Etymology? = null,
+    val etymology: EtymologyDto? = null,
     val radical: String? = null,
     val matches: List<List<Int>?> = emptyList()
 )

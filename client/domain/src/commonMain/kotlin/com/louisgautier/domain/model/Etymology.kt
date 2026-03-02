@@ -1,8 +1,5 @@
-package com.louisgautier.apicontracts.dto
+package com.louisgautier.domain.model
 
-import kotlinx.serialization.Serializable
-
-@Serializable
 data class Etymology(
     val type: EtymologyType? = null,
     val phonetic: String? = null,

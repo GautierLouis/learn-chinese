@@ -1,6 +1,5 @@
 package com.louisgautier.domain.model
 
-import com.louisgautier.apicontracts.dto.Etymology
 
 data class Dictionary(
     val code: Int,

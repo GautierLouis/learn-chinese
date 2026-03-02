@@ -4,7 +4,7 @@ import com.louisgautier.apicontracts.KeepForR8
 import kotlinx.serialization.SerialName
 
 @KeepForR8
-enum class EtymologyType {
+enum class EtymologyTypeDto {
     @SerialName("ideographic")
     IDEOGRAPHIC,
 
