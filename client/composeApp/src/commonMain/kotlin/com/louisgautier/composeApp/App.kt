@@ -17,16 +17,19 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.louisgautier.composeApp.dictionary.DictionaryScreen
 import com.louisgautier.composeApp.home.HomeScreen
-import com.louisgautier.composeApp.session.SessionBuilderScreen
-import com.louisgautier.composeApp.session.SessionCongratulationScreen
-import com.louisgautier.composeApp.session.SessionScreen
+import com.louisgautier.dictionary.DictionaryScreen
 import com.louisgautier.firebase.FirebaseManager
 import com.louisgautier.firebase.RemoteConfigManager
 import com.louisgautier.firebase.event.Tracker
+import com.louisgautier.learning.builder.SessionBuilderScreen
+import com.louisgautier.learning.congratulation.SessionCongratulationScreen
+import com.louisgautier.learning.session.SessionScreen
 import com.louisgautier.logger.AppLogger
 import com.louisgautier.utils.AppConfig
+import com.louisgautier.utils.AppNavigation
+import com.louisgautier.utils.NavigationCommand
+import com.louisgautier.utils.Route
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -36,7 +39,7 @@ import org.koin.mp.KoinPlatform
 class AppViewModel(
     private val firebaseManager: FirebaseManager,
     private val remoteConfigManager: RemoteConfigManager,
-): ViewModel() {
+) : ViewModel() {
 
     init {
 

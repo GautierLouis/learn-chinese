@@ -1,11 +1,11 @@
 package com.louisgautier.network
 
-import com.louisgautier.apicontracts.dto.CharacterFrequencyLevel
-import com.louisgautier.apicontracts.dto.DictionaryWithGraphic
-import com.louisgautier.apicontracts.dto.Graphic
-import com.louisgautier.apicontracts.dto.LevelCount
-import com.louisgautier.apicontracts.dto.ResponseList
-import com.louisgautier.apicontracts.dto.SimpleDictionary
+import com.louisgautier.apicontracts.dto.CharacterFrequencyLevelDto
+import com.louisgautier.apicontracts.dto.DictionaryWithGraphicDto
+import com.louisgautier.apicontracts.dto.GraphicDto
+import com.louisgautier.apicontracts.dto.LevelCountDto
+import com.louisgautier.apicontracts.dto.ResponseListDto
+import com.louisgautier.apicontracts.dto.SimpleDictionaryDto
 import com.louisgautier.apicontracts.routing.EndPoint
 import com.louisgautier.network.interfaces.CharacterService
 import io.ktor.client.HttpClient
@@ -16,36 +16,36 @@ class DefaultCharacterService(
     private val client: HttpClient,
 ) : CharacterService {
 
-    override suspend fun getLevelCount(): Result<List<LevelCount>> {
+    override suspend fun getLevelCount(): Result<List<LevelCountDto>> {
         return call {
             client.get(EndPoint.Level())
         }
     }
 
     override suspend fun generateSession(
-        level: List<CharacterFrequencyLevel>,
+        level: List<CharacterFrequencyLevelDto>,
         limit: Int
-    ): Result<List<DictionaryWithGraphic>> {
+    ): Result<List<DictionaryWithGraphicDto>> {
         return call {
             client.get(EndPoint.GenerateSession(level = level, limit = limit))
         }
     }
 
     override suspend fun getByLevel(
-        level: CharacterFrequencyLevel,
+        level: CharacterFrequencyLevelDto,
         page: Int,
         limit: Int
-    ): Result<ResponseList<SimpleDictionary>> {
+    ): Result<ResponseListDto<SimpleDictionaryDto>> {
         return call {
             client.get(EndPoint.Characters.ByLevel(page = page, limit = limit, level = level))
         }
     }
 
-    override suspend fun getByName(code: Int): Result<DictionaryWithGraphic> {
+    override suspend fun getByName(code: Int): Result<DictionaryWithGraphicDto> {
         return call { client.get(EndPoint.Characters.ByName(code = code)) }
     }
 
-    override suspend fun getSVG(code: Int): Result<Graphic> {
+    override suspend fun getSVG(code: Int): Result<GraphicDto> {
         return call {
             client.get(
                 EndPoint.Characters.ByName.SVG(
@@ -56,7 +56,7 @@ class DefaultCharacterService(
     }
 }
 
-fun getMockResponse(): Result<List<DictionaryWithGraphic>> {
+fun getMockResponse(): Result<List<DictionaryWithGraphicDto>> {
     val mockResponse = """[
   {
     "dictionary": {
@@ -419,6 +419,6 @@ fun getMockResponse(): Result<List<DictionaryWithGraphic>> {
     }
   }
 ]"""
-    val data = Json.decodeFromString<List<DictionaryWithGraphic>>(mockResponse)
+    val data = Json.decodeFromString<List<DictionaryWithGraphicDto>>(mockResponse)
     return Result.success(data)
 }

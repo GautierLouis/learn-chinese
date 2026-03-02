@@ -26,13 +26,10 @@ kotlin {
         commonMain.dependencies {
             implementation(projects.client.core)
             implementation(projects.client.feature.login)
+            implementation(projects.client.feature.learning)
+            implementation(projects.client.feature.dictionary)
             implementation(projects.client.designSystem)
             implementation(projects.client.domain) // needed for Koin
-
-            implementation(projects.apiContracts) // shortcut
-
-            implementation(libs.androidx.paging.common)
-            implementation(libs.androidx.paging.compose)
         }
 
         androidMain.dependencies {
