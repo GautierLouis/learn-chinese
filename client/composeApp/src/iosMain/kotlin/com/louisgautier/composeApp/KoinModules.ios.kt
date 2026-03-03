@@ -6,5 +6,5 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 
 actual val appPlatformModule: Module = module {
-    singleOf(::AppleAppBuilder) bind AppConfigBuilder::class
+    singleOf(::IOSAppBuilder) bind AppConfigBuilder::class
 }

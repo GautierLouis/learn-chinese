@@ -7,11 +7,10 @@ import android.content.Context
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import com.louisgautier.utils.context.ContextWrapper
 
 class AndroidPushNotificationManager(
-    private val contextWrapper: ContextWrapper,
-): PushNotificationManager {
+    private val context: Context,
+) : PushNotificationManager {
 
     init {
         //Create Channel if needed
@@ -20,14 +19,14 @@ class AndroidPushNotificationManager(
 
     @SuppressLint("MissingPermission")
     override fun sendNotification(data: PushNotificationData) {
-        val builder = NotificationCompat.Builder(contextWrapper.context, "CHANNEL_ID")
+        val builder = NotificationCompat.Builder(context, "CHANNEL_ID")
 //            .setSmallIcon() TODO(Fix): Crash if no icon
             .setContentTitle(data.title)
             .setContentText(data.body)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT) // Set priority for older Android versions
             .setAutoCancel(true) // Automatically removes the notification when the user taps it
 
-        with(NotificationManagerCompat.from(contextWrapper.context)) {
+        with(NotificationManagerCompat.from(context)) {
             // notificationId is a unique int for each notification that you must define
             notify(data.hashCode(), builder.build())
         }
@@ -44,7 +43,7 @@ class AndroidPushNotificationManager(
             }
 
             val notificationManager: NotificationManager =
-                contextWrapper.context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
     }

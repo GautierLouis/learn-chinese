@@ -1,14 +1,10 @@
 package com.louisgautier.composeApp
 
-import com.louisgautier.utils.AppConfig
-import com.louisgautier.utils.context.ContextWrapper
+import org.koin.core.module.Module
+import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.bind
+import org.koin.dsl.module
 
-actual fun buildPlatformFlavor(contextWrapper: ContextWrapper): AppConfig {
-    return AppConfig(
-        platform = "Android",
-        flavor = BuildConfig.FLAVOR,
-        isProduction = BuildConfig.FLAVOR == "prod",
-        versionName = BuildConfig.VERSION_NAME,
-        versionCode = BuildConfig.VERSION_CODE.toString()
-    )
+actual val appPlatformModule: Module = module {
+    singleOf(::AndroidAppBuilder) bind AppConfigBuilder::class
 }

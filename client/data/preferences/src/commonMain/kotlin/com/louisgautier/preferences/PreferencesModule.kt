@@ -1,17 +1,20 @@
 package com.louisgautier.preferences
 
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
-import com.louisgautier.utils.context.ContextWrapper
-import okio.Path.Companion.toPath
+import org.koin.core.module.Module
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val preferencesModule =
     module {
+        includes(preferencesPlatformModule)
         single {
             PreferenceDataStoreFactory.createWithPath(
-                produceFile = { getDatastoreFilePath(get<ContextWrapper>()).toPath() },
+                produceFile = { get<DataStore>().getPath() },
             )
         }
-        single { DefaultAppPreferences(get()) } bind AppPreferences::class
+        singleOf(::DefaultAppPreferences) bind AppPreferences::class
     }
+
+internal expect val preferencesPlatformModule: Module

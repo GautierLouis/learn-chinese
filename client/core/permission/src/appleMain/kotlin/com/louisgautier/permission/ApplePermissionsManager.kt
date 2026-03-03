@@ -8,8 +8,8 @@ import platform.Photos.PHAuthorizationStatusNotDetermined
 import platform.Photos.PHPhotoLibrary
 
 
-actual class PermissionsManager() {
-    actual fun isPermissionGranted(permission: PermissionType): PermissionResult {
+class ApplePermissionsManager: PermissionsManager {
+    override fun isPermissionGranted(permission: PermissionType): PermissionResult {
         return when (permission) {
             PermissionType.GALLERY -> {
                 val status = PHPhotoLibrary.authorizationStatus() == PHAuthorizationStatusAuthorized
@@ -22,7 +22,7 @@ actual class PermissionsManager() {
         }
     }
 
-    actual suspend fun requestPermission(
+    override suspend fun requestPermission(
         permission: PermissionType,
         callback: PermissionCallback
     ) {

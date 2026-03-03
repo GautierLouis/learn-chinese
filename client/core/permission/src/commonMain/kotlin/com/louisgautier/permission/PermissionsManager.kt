@@ -8,7 +8,7 @@ import com.louisgautier.utils.CoreKeepForR8
  *
  * This interface provides a way to check if a permission is granted and to request a permission.
  */
-expect class PermissionsManager {
+interface PermissionsManager {
     fun isPermissionGranted(permission: PermissionType): PermissionResult
     suspend fun requestPermission(permission: PermissionType, callback: PermissionCallback)
 }

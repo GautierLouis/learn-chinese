@@ -1,7 +1,7 @@
 package com.louisgautier.preferences
 
-import com.louisgautier.utils.context.ContextWrapper
+import okio.Path
 
-internal const val dataStoreFileName = "dice.preferences_pb"
-
-internal expect fun getDatastoreFilePath(contextWrapper: ContextWrapper): String
+interface DataStore {
+    fun getPath(name: String = "dice.preferences_pb"): Path
+}

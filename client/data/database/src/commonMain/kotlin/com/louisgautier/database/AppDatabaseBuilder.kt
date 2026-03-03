@@ -2,17 +2,20 @@ package com.louisgautier.database
 
 import androidx.room.RoomDatabase
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
-import com.louisgautier.utils.context.ContextWrapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 
-internal expect fun getDatabaseBuilder(
-    contextWrapper: ContextWrapper,
-    databaseFileName: String = "app_database.db",
-): RoomDatabase.Builder<AppDatabase>
+interface AppDatabaseBuilder {
+    fun createDatabase(databaseFileName: String = "app_database.db"): RoomDatabase.Builder<AppDatabase>
+}
 
-fun getRoomDatabase(contextWrapper: ContextWrapper): AppDatabase =
-    getDatabaseBuilder(contextWrapper)
+class DatabaseProvider(
+    private val builder: AppDatabaseBuilder
+) {
+    fun getDatabase(): AppDatabase = builder.createDatabase()
         .setDriver(BundledSQLiteDriver())
         .setQueryCoroutineContext(Dispatchers.IO)
         .build()
+}
+
+

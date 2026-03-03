@@ -7,7 +7,6 @@ import com.louisgautier.domain.domainModule
 import com.louisgautier.learning.learningModule
 import com.louisgautier.login.loginModule
 import com.louisgautier.utils.AppConfig
-import com.louisgautier.utils.context.ContextWrapper
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
@@ -21,9 +20,12 @@ private fun featuresModule() = listOf(
 )
 
 private fun appModule() = module {
+    single<AppConfig> {
+        get<AppConfigBuilder>()()
+    }
+    includes(appPlatformModule)
     viewModelOf(::HomeViewModel)
     viewModelOf(::AppViewModel)
-    single { buildPlatformFlavor(get()) }
 }
 
-expect fun buildPlatformFlavor(contextWrapper: ContextWrapper): AppConfig
+expect val appPlatformModule: Module

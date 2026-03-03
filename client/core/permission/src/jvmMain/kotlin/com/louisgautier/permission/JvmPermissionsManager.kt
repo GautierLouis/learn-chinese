@@ -1,11 +1,11 @@
 package com.louisgautier.permission
 
-actual class PermissionsManager {
-    actual fun isPermissionGranted(permission: PermissionType): PermissionResult {
+class JvmPermissionsManager: PermissionsManager {
+    override fun isPermissionGranted(permission: PermissionType): PermissionResult {
         return PermissionResult.GRANTED
     }
 
-    actual suspend fun requestPermission(
+    override suspend fun requestPermission(
         permission: PermissionType,
         callback: PermissionCallback
     ) {
